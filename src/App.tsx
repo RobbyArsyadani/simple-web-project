@@ -1,0 +1,121 @@
+import { useState } from "react";
+import Layout from "./components/layout";
+
+type IFruit = {
+  fruitId: number;
+  fruitName: string;
+  fruitType: "IMPORT" | "LOCAL";
+  stock: number;
+};
+const fruits: IFruit[] = [
+  {
+    fruitId: 1,
+    fruitName: "Apel",
+    fruitType: "IMPORT",
+    stock: 10,
+  },
+  {
+    fruitId: 2,
+    fruitName: "Kurma",
+    fruitType: "IMPORT",
+    stock: 20,
+  },
+  {
+    fruitId: 3,
+    fruitName: "apel",
+    fruitType: "IMPORT",
+    stock: 50,
+  },
+  {
+    fruitId: 4,
+    fruitName: "Manggis",
+    fruitType: "LOCAL",
+    stock: 100,
+  },
+  {
+    fruitId: 5,
+    fruitName: "Jeruk Bali",
+    fruitType: "LOCAL",
+    stock: 10,
+  },
+  {
+    fruitId: 5,
+    fruitName: "KURMA",
+    fruitType: "IMPORT",
+    stock: 20,
+  },
+  {
+    fruitId: 5,
+    fruitName: "Salak",
+    fruitType: "LOCAL",
+    stock: 150,
+  },
+];
+
+export default function App() {
+  const [type, setType] = useState("IMPORT");
+  let id = 1;
+
+  const tipe = fruits.filter((buah) => buah.fruitType === type);
+  const totalStock = tipe.reduce((acc, curr) => acc + curr.stock, 0);
+  return (
+    <Layout>
+      <main className="inimain d-grid gap-3 mt-3 px-2">
+        <div className="fruitname p-3 shadow rounded" style={{ backgroundColor: "#78ABA8" }}>
+          <p>Fruitname:</p>
+          {fruits.map((buah) => (
+            <div key={buah.fruitId} className="d-inline">
+              <p className="tct d-inline">{buah.fruitName.split("").join(" ")}</p>
+              {buah !== fruits[fruits.length - 1] && <span className="d-inline">, </span>}
+            </div>
+          ))}
+        </div>
+        <div className="fruitType d-grid gap-3 p-3 shadow rounded text-white" style={{ backgroundColor: "#538392" }}>
+          <div className="d-grid gap-2">
+            <label>
+              Fruit type:
+              <select className="rounded ms-2" style={{ backgroundColor: "#E0FBE2" }} value={type} onChange={(e) => setType(e.target.value)} name="selectedFruit">
+                <option value="IMPORT">IMPORT</option>
+                <option value="LOCAL">LOCAL</option>
+              </select>
+            </label>
+            <div className="d-inline">
+              {tipe.map((tipes) => (
+                <>
+                  <p className="d-inline">{tipes.fruitName.split("").join(" ")}</p>
+                  {tipes !== tipe[tipe.length - 1] && <span className="d-inline">, </span>}
+                </>
+              ))}
+            </div>
+          </div>
+          <div className=" d-grid col-6">
+            <table className="table table-bordered table-success">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Nama Buah</th>
+                  <th scope="col">Stock</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tipe.map((tipes) => (
+                  <>
+                    <tr>
+                      <th scope="row">{id++}</th>
+                      <td>{tipes.fruitName}</td>
+                      <td>{tipes.stock}</td>
+                    </tr>
+                  </>
+                ))}
+                <tr>
+                  <td colSpan={2}>Total stock</td>
+                  <td>{totalStock}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </Layout>
+  );
+}
